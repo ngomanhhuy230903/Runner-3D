@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerControllers : MonoBehaviour
 {
@@ -11,6 +14,9 @@ public class PlayerControllers : MonoBehaviour
     public ParticleSystem dirtSplatterParticle;
     public AudioClip jumpSound;
     public AudioClip crashSound;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI gameoverText;
+    public Button replayButton;
     public float jumpForce;
     public float gravityModifier;
     public bool isOnGround = true;
@@ -45,12 +51,22 @@ public class PlayerControllers : MonoBehaviour
         else if (collision.gameObject.CompareTag("Obstacles"))
         {
             Debug.Log("Game Over");
-            gameOver = true;
+            GameOver();
             playerAnim.SetBool("Death_b", true);
             playerAnim.SetInteger("DeathType_int", 1);
             explosionParticle.Play();
             dirtSplatterParticle.Stop();
             playderAudio.PlayOneShot(crashSound, 1f);
         }
+    }
+    private void GameOver()
+    {
+        gameoverText.gameObject.SetActive(true);
+        replayButton.gameObject.SetActive(true);
+        gameOver = true;
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
